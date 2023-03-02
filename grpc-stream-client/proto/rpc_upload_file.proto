@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "grpc.stream.client/pb";
+
+message UploadFileRequest {
+  oneof data {
+    ImageInfo info = 1;
+    bytes chunk = 2;
+  }
+}
+
+message ImageInfo {
+  string filepath = 1;
+  string filetype = 2;
+  string filename = 3;
+}
+
+message UploadFileResponse {
+  string status = 1;
+  string filePath = 2;
+}
+
+

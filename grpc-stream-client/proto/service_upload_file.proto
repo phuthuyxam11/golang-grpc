@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package pb;
+
+import "rpc_upload_file.proto";
+
+option go_package = "grpc.stream.client/pb";
+
+service UploadService {
+  rpc UploadFileStream(stream UploadFileRequest) returns (UploadFileResponse){}
+}
