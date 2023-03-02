@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package pb;
+
+import "rpc_create_todo.proto";
+
+option go_package = "grpc_stream_server.study/pb";
+
+service TodoService {
+  rpc CreateTodoStream(CreateTodoRequest) returns (stream CreateTodoResponse){}
+}

@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/api/annotations.proto";
+import "rpc_create_todo.proto";
+import "rpc_delete_todo.proto";
+
+option go_package = "unary_pb.study/pb";
+
+service TodoService {
+  rpc CreateTodo(CreateTodoRequest) returns (CreateTodoResponse){
+    option (google.api.http) = {
+      post: "/v1/todo/create"
+      body: "*"
+    };
+  }
+  rpc DeleteTodo(DeleteTodoRequest) returns (DeleteTodoResponse){}
+}

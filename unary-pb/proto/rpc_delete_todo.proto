@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "unary_pb.study/pb";
+
+enum DeleteType {
+  SOFT_DELETE = 0;
+  HARD_DELETE = 1;
+}
+
+message DeleteTodoRequest {
+  int32 id = 1;
+  DeleteType delete_type = 2;
+}
+
+message DeleteTodoResponse {
+  string message = 1;
+}

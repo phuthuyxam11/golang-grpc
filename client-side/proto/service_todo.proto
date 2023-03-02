@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package pb;
+
+import "rpc_create_todo.proto";
+import "rpc_delete_todo.proto";
+
+option go_package = "grpc_client.study/pb";
+
+service TodoService {
+  rpc CreateTodo(CreateTodoRequest) returns (CreateTodoResponse){}
+  rpc DeleteTodo(DeleteTodoRequest) returns (DeleteTodoResponse){}
+}
