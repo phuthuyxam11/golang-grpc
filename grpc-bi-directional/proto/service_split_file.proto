@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package pb;
+
+import "rpc_split_file.proto";
+
+option go_package = "grpc.bi.directional/pb";
+
+service SplitFileService {
+  rpc SplitFile(stream SplitFileRequest) returns (stream SplitFileResponse){}
+}

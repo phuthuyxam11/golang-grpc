@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "grpc.bi.directional/pb";
+
+message SplitFileRequest {
+  oneof data {
+    FileInfo fileInfo = 1;
+    bytes chunk = 2;
+  }
+
+}
+message FileInfo {
+  string filePath = 1;
+  string fileName = 2;
+}
+
+message SplitFileResponse {
+  string status = 1;
+  string filePath = 2;
+  bool finish = 3;
+}
+
+

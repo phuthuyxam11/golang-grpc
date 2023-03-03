@@ -7,11 +7,16 @@ import (
 	"grpc.stream.client/pb"
 	"grpc.stream.client/services"
 	"log"
+	"math"
 	"net"
 )
 
+type ServerOption interface {
+	// contains filtered or unexported methods
+}
+
 func main() {
-	grpcServer := grpc.NewServer()
+	grpcServer := grpc.NewServer(grpc.MaxSendMsgSize(math.MaxInt), grpc.MaxRecvMsgSize(math.MaxInt))
 	server := services.Server{}
 
 	pb.RegisterUploadServiceServer(grpcServer, &server)
