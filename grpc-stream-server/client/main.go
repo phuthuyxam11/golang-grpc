@@ -2,16 +2,40 @@ package main
 
 import (
 	"context"
+	"crypto/tls"
+	"crypto/x509"
+	"fmt"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/credentials"
 	"grpc_stream_server.study/pb"
+	"io/ioutil"
 	"log"
 	"time"
 )
 
+func LoadTLSCredentials() (credentials.TransportCredentials, error) {
+	pemServerCA, err := ioutil.ReadFile("../ssl/ca-cert.pem")
+	if err != nil {
+		return nil, err
+	}
+	certPool := x509.NewCertPool()
+	if !certPool.AppendCertsFromPEM(pemServerCA) {
+		return nil, fmt.Errorf("fail to add server CA's certificate")
+	}
+	config := &tls.Config{
+		RootCAs: certPool,
+	}
+	return credentials.NewTLS(config), nil
+}
+
 func main() {
+	credential, err := LoadTLSCredentials()
+	if err != nil {
+		log.Fatalln("Error create client credential: ", err)
+		return
+	}
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
-	conn, err := grpc.DialContext(ctx, "localhost:1998", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.DialContext(ctx, "localhost:1998", grpc.WithTransportCredentials(credential))
 	if err != nil {
 		log.Fatalln("Error connect grpc server: ", err)
 	}

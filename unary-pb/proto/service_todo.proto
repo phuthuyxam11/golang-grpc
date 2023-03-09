@@ -15,5 +15,5 @@ service TodoService {
       body: "*"
     };
   }
-  rpc DeleteTodo(DeleteTodoRequest) returns (DeleteTodoResponse){}
+  rpc DeleteTodoWithDeadline(DeleteTodoRequest) returns (DeleteTodoResponse){}
 }

@@ -23,7 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TodoServiceClient interface {
 	CreateTodo(ctx context.Context, in *CreateTodoRequest, opts ...grpc.CallOption) (*CreateTodoResponse, error)
-	DeleteTodo(ctx context.Context, in *DeleteTodoRequest, opts ...grpc.CallOption) (*DeleteTodoResponse, error)
+	DeleteTodoWithDeadline(ctx context.Context, in *DeleteTodoRequest, opts ...grpc.CallOption) (*DeleteTodoResponse, error)
 }
 
 type todoServiceClient struct {
@@ -43,9 +43,9 @@ func (c *todoServiceClient) CreateTodo(ctx context.Context, in *CreateTodoReques
 	return out, nil
 }
 
-func (c *todoServiceClient) DeleteTodo(ctx context.Context, in *DeleteTodoRequest, opts ...grpc.CallOption) (*DeleteTodoResponse, error) {
+func (c *todoServiceClient) DeleteTodoWithDeadline(ctx context.Context, in *DeleteTodoRequest, opts ...grpc.CallOption) (*DeleteTodoResponse, error) {
 	out := new(DeleteTodoResponse)
-	err := c.cc.Invoke(ctx, "/pb.TodoService/DeleteTodo", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/pb.TodoService/DeleteTodoWithDeadline", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +57,7 @@ func (c *todoServiceClient) DeleteTodo(ctx context.Context, in *DeleteTodoReques
 // for forward compatibility
 type TodoServiceServer interface {
 	CreateTodo(context.Context, *CreateTodoRequest) (*CreateTodoResponse, error)
-	DeleteTodo(context.Context, *DeleteTodoRequest) (*DeleteTodoResponse, error)
+	DeleteTodoWithDeadline(context.Context, *DeleteTodoRequest) (*DeleteTodoResponse, error)
 	mustEmbedUnimplementedTodoServiceServer()
 }
 
@@ -68,8 +68,8 @@ type UnimplementedTodoServiceServer struct {
 func (UnimplementedTodoServiceServer) CreateTodo(context.Context, *CreateTodoRequest) (*CreateTodoResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateTodo not implemented")
 }
-func (UnimplementedTodoServiceServer) DeleteTodo(context.Context, *DeleteTodoRequest) (*DeleteTodoResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteTodo not implemented")
+func (UnimplementedTodoServiceServer) DeleteTodoWithDeadline(context.Context, *DeleteTodoRequest) (*DeleteTodoResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteTodoWithDeadline not implemented")
 }
 func (UnimplementedTodoServiceServer) mustEmbedUnimplementedTodoServiceServer() {}
 
@@ -102,20 +102,20 @@ func _TodoService_CreateTodo_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
-func _TodoService_DeleteTodo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _TodoService_DeleteTodoWithDeadline_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteTodoRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(TodoServiceServer).DeleteTodo(ctx, in)
+		return srv.(TodoServiceServer).DeleteTodoWithDeadline(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pb.TodoService/DeleteTodo",
+		FullMethod: "/pb.TodoService/DeleteTodoWithDeadline",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TodoServiceServer).DeleteTodo(ctx, req.(*DeleteTodoRequest))
+		return srv.(TodoServiceServer).DeleteTodoWithDeadline(ctx, req.(*DeleteTodoRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -132,8 +132,8 @@ var TodoService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _TodoService_CreateTodo_Handler,
 		},
 		{
-			MethodName: "DeleteTodo",
-			Handler:    _TodoService_DeleteTodo_Handler,
+			MethodName: "DeleteTodoWithDeadline",
+			Handler:    _TodoService_DeleteTodoWithDeadline_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

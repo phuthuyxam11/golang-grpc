@@ -7,9 +7,6 @@ import (
 
 func (server *Server) CreateTodo(ctx context.Context, request *pb.CreateTodoRequest) (*pb.CreateTodoResponse, error) {
 	return &pb.CreateTodoResponse{
-		Title:    request.GetTitle(),
-		Cat:      request.GetCat(),
-		Auth:     request.GetAuth(),
-		CreateAt: request.GetCreateAt(),
+		Status: "ok",
 	}, nil
 }
